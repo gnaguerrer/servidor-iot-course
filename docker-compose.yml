@@ -37,8 +37,22 @@ services:
     build:
       context: .
       dockerfile: grafana/Dockerfile
+    depends_on:
+      - database
 
   telegraf:
     container_name: telegraf
     image: telegraf:1.25.0
     restart: always
+    environment:
+      - INFLUX_TOKEN=BOTwqQSKrj8S9vuKB1VyzRv6yQJk5P8jdVl4HEYAS-a3X2g9XKCyTbuiRuY2EH4lg9hwQ19508PP1z_ylBoihg==
+    command: --config http://influxDB:8086/api/v2/telegrafs/0aa9d76b14922000
+    depends_on:
+      - database
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.29.0.0/24
