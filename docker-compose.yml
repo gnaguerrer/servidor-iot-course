@@ -42,8 +42,11 @@ services:
 
   telegraf:
     container_name: telegraf
-    image: telegraf:1.25.0
+    image: telegraf-image
     restart: always
+    build:
+      context: .
+      dockerfile: telegraf/Dockerfile
     environment:
       - INFLUX_TOKEN=BOTwqQSKrj8S9vuKB1VyzRv6yQJk5P8jdVl4HEYAS-a3X2g9XKCyTbuiRuY2EH4lg9hwQ19508PP1z_ylBoihg==
     command: --config http://influxDB:8086/api/v2/telegrafs/0aa9d76b14922000
