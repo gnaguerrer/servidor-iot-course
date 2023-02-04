@@ -24,14 +24,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "6amsoqo4z"
+        "uid": "P5697886F9CA74929"
       },
       "fieldConfig": {
         "defaults": {
@@ -97,7 +96,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "single",
@@ -108,30 +107,24 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "6amsoqo4z"
+            "uid": "P5697886F9CA74929"
           },
-          "hide": false,
-          "query": "from(bucket: \"bucket\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"reporte\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"ph\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"device_1\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurement\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "pH",
+      "title": "Temperature",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "6amsoqo4z"
+        "uid": "P5697886F9CA74929"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -151,35 +144,100 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 9,
+        "w": 6,
         "x": 12,
         "y": 0
       },
       "id": 4,
       "options": {
-        "footer": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
           "fields": "",
-          "reducer": ["last"],
-          "show": true
+          "values": false
         },
-        "showHeader": true
+        "textMode": "auto"
       },
       "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "6amsoqo4z"
+            "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"bucket\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"reporte\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"ph\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"temperature\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Maximum\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "pH",
-      "type": "table"
+      "title": "Max.Temperature",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"temperature\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Minumum\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Min. Temperature",
+      "type": "stat"
     }
   ],
+  "refresh": "5s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -192,8 +250,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "LAB2",
-  "uid": "Plgc6qoVk",
-  "version": 3,
+  "title": "Lab3",
+  "uid": "xZQwNA04k",
+  "version": 1,
   "weekStart": ""
 }

@@ -9,10 +9,13 @@ services:
     build:
       context: .
       dockerfile: influx/Dockerfile
+    env_file:
+      - influx/setup.env
     networks:
       default:
         aliases:
           - influxDB
+
   broker:
     container_name: rabbit
     image: rabbit-image
@@ -28,6 +31,7 @@ services:
       default:
         aliases:
           - rabbit
+
   gui:
     container_name: grafana
     image: grafana-image
@@ -37,8 +41,14 @@ services:
     build:
       context: .
       dockerfile: grafana/Dockerfile
+    volumes:
+      - ./grafana/influx.yml:/etc/grafana/provisioning/datasources/influx.yml
+      - ./grafana/grafana.yml:/etc/grafana/provisioning/dashboards/grafana.yml
+      - ./grafana/:/var/lib/grafana/dashboards/
     depends_on:
       - database
+    env_file:
+      - grafana/setup.env
 
   telegraf:
     container_name: telegraf
@@ -47,11 +57,23 @@ services:
     build:
       context: .
       dockerfile: telegraf/Dockerfile
-    environment:
-      - INFLUX_TOKEN=BOTwqQSKrj8S9vuKB1VyzRv6yQJk5P8jdVl4HEYAS-a3X2g9XKCyTbuiRuY2EH4lg9hwQ19508PP1z_ylBoihg==
-    command: --config http://influxDB:8086/api/v2/telegrafs/0aa9d76b14922000
+    volumes:
+      - ./telegraf/rabbit.conf:/etc/telegraf/telegraf.conf
     depends_on:
       - database
+      - broker
+
+  analytics:
+    container_name: analytics
+    image: analytics-image
+    restart: always
+    build:
+      context: .
+      dockerfile: analytics/Dockerfile
+    depends_on:
+      - database
+      - broker
+      - telegraf
 
 networks:
   default:
