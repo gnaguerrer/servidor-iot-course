@@ -49,7 +49,16 @@ services:
     command: --config http://influxDB:8086/api/v2/telegrafs/0aa9d76b14922000
     depends_on:
       - database
-
+  analytics:
+    container_name: analytics
+    image: analytics-image
+    restart: always
+    build:
+      context: .
+      dockerfile: analytics/Dockerfile
+    depends_on:
+      - database
+      - broker
 networks:
   default:
     ipam:
