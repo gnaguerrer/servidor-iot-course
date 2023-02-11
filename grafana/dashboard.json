@@ -24,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -32,24 +33,24 @@
         "type": "datasource",
         "uid": "grafana"
       },
-      "description": "",
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 14,
+      "id": 8,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Step Tacker\n\n> Source code: https://github.com/gnaguerrer/servidor-iot-course\n\n```\ngit clone https://github.com/gnaguerrer/servidor-iot-course\ngit checkout feature/lab3\n```",
+        "content": "# Flower classifier counter\n\n> Source code: https://github.com/gnaguerrer/servidor-iot-course\n\n```\ngit clone https://github.com/gnaguerrer/servidor-iot-course\ncd servidor-iot-course\ngit checkout feature/lab4\n```",
         "mode": "markdown"
       },
       "pluginVersion": "9.3.6",
+      "title": "Flower classifier counter",
       "type": "text"
     },
     {
@@ -60,37 +61,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -111,35 +82,36 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 8,
         "x": 0,
-        "y": 5
+        "y": 6
       },
       "id": 2,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "textMode": "auto"
       },
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"Reloj_inteligente\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurement\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"steps\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"class\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"virginica\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Steps",
-      "type": "timeseries"
+      "title": "Virginica",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -158,6 +130,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -166,9 +142,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 6,
-        "x": 12,
-        "y": 5
+        "w": 8,
+        "x": 8,
+        "y": 6
       },
       "id": 4,
       "options": {
@@ -190,11 +166,11 @@
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"steps\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Maximum\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"class\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"setosa\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Max. Steps",
+      "title": "Setosa",
       "type": "stat"
     },
     {
@@ -214,6 +190,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -222,9 +202,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 6,
-        "x": 18,
-        "y": 5
+        "w": 8,
+        "x": 16,
+        "y": 6
       },
       "id": 6,
       "options": {
@@ -246,183 +226,11 @@
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"steps\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"Minumum\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"class\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"versicolor\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Min. Steps",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "P5697886F9CA74929"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 14
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"steps\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"days_100k\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Days above 100k steps",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "P5697886F9CA74929"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 14
-      },
-      "id": 10,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"steps\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"days_5k\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Days bellow 5k steps",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "P5697886F9CA74929"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 7
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 14
-      },
-      "id": 12,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "P5697886F9CA74929"
-          },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"steps\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"days_consecutive\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")\r\n  ",
-          "refId": "A"
-        }
-      ],
-      "title": "Record days",
+      "title": "Versicolor",
       "type": "stat"
     }
   ],
@@ -434,13 +242,13 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Lab3",
-  "uid": "xZQwNA04k",
-  "version": 1,
+  "title": "Lab4",
+  "uid": "fB2z0ZJ4z",
+  "version": 2,
   "weekStart": ""
 }
