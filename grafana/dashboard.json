@@ -24,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -33,6 +32,7 @@
         "type": "datasource",
         "uid": "grafana"
       },
+      "description": "",
       "gridPos": {
         "h": 6,
         "w": 24,
@@ -46,11 +46,11 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# Flower classifier counter\n\n> Source code: https://github.com/gnaguerrer/servidor-iot-course\n\n```\ngit clone https://github.com/gnaguerrer/servidor-iot-course\ncd servidor-iot-course\ngit checkout feature/lab4\n```",
+        "content": "# IoT Diplomat Final Project\n\n> Source code: https://github.com/gnaguerrer/servidor-iot-course\n\n```\ngit clone https://github.com/gnaguerrer/servidor-iot-course\ncd servidor-iot-course\ngit checkout feature/final_project\n```",
         "mode": "markdown"
       },
       "pluginVersion": "9.3.6",
-      "title": "Flower classifier counter",
+      "title": "Project Info",
       "type": "text"
     },
     {
@@ -106,11 +106,11 @@
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"class\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"virginica\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Virginica",
+      "title": "Temperature (°C)",
       "type": "stat"
     },
     {
@@ -166,11 +166,11 @@
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"class\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"setosa\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"humidity\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Setosa",
+      "title": "Relative Humidity (%)",
       "type": "stat"
     },
     {
@@ -226,11 +226,11 @@
             "type": "influxdb",
             "uid": "P5697886F9CA74929"
           },
-          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"Analytics\")\r\n  |> filter(fn: (r) => r[\"Descriptive\"] == \"class\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"versicolor\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"rabbit\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"topic\"] == \"data\")\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"measurements\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"pressure\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "Versicolor",
+      "title": "Atmospheric pressure (hPa)",
       "type": "stat"
     }
   ],
@@ -247,8 +247,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Lab4",
+  "title": "Final_project",
   "uid": "fB2z0ZJ4z",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
